@@ -1,1 +1,24 @@
+server:
+  port: 9010
+  
+spring:
+  application:
+    name: FLYING-CUBE-SERVICE
+  banner:
+    location: classpath:banner/banner.txt
+  h2:
+    console:
+      enabled: true
+  datasource:
+#    url: jdbc:h2:mem:testdb
+#    driverClassName: org.h2.Driver
+    url: jdbc:p6spy:h2:mem:testdb
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    
+logging:
+  config: classpath:logback/logback-spring.xml    
 
