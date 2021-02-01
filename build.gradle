@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.3.8.RELEASE'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.ktds'
@@ -23,7 +24,6 @@ dependencies {
     //implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -33,6 +33,17 @@ dependencies {
     }
     testImplementation 'org.springframework.security:spring-security-test'
 
+    // https://mvnrepository.com/artifact/com.querydsl/querydsl-jpa
+    compile group: 'com.querydsl', name: 'querydsl-jpa', version: '4.4.0'
+    // https://mvnrepository.com/artifact/com.querydsl/querydsl-apt
+    compile group: 'com.querydsl', name: 'querydsl-apt', version: '4.4.0'
+    // https://mvnrepository.com/artifact/org.mapstruct/mapstruct
+    compile group: 'org.mapstruct', name: 'mapstruct', version: '1.4.1.Final'
+    // https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor
+    compile group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.4.1.Final'
+
+    compileOnly 'org.projectlombok:lombok'
+
     // https://mvnrepository.com/artifact/p6spy/p6spy
     compile group: 'p6spy', name: 'p6spy', version: '3.9.1'
     // https://mvnrepository.com/artifact/com.integralblue/log4jdbc-spring-boot-starter
@@ -41,9 +52,33 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
     // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    compile group: 'com.google.guava', name: 'guava', version: '30.1-jre'
 
+}
 
+//querydsl
+def queryDslDir = "src/main/generated"
 
+querydsl {
+    library = "com.querydsl:querydsl-apt:4.4.0" // 사용할 AnnotationProcesoor 정의
+    jpa = true
+    querydslSourcesDir = queryDslDir
+}
+sourceSets {
+    main {
+        java {
+            srcDir queryDslDir
+        }
+    }
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
 }
 
 test {

@@ -11,20 +11,20 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseTemplate<T> extends BaseResponse {
+public class ResponseDto<T> extends BaseResponse {
 
 	private T data;
 
-	public static <T> ResponseTemplate<T> ok(T data) {
-		ResponseTemplate<T> response = new ResponseTemplate<>();
+	public static <T> ResponseDto<T> of(T data) {
+		ResponseDto<T> response = new ResponseDto<>();
 		response.setData(data);
 		response.setMessage("success");
 		response.setStatus(HttpStatus.OK);
 		return response;
 	}
 
-	public static <T> ResponseTemplate<T> ok(T data, String message) {
-		ResponseTemplate<T> response = new ResponseTemplate<>();
+	public static <T> ResponseDto<T> of(T data, String message) {
+		ResponseDto<T> response = new ResponseDto<>();
 		response.setData(data);
 		response.setMessage(message);
 		response.setStatus(HttpStatus.OK);
