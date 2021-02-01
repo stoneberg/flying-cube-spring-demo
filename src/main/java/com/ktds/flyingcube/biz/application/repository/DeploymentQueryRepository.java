@@ -2,7 +2,7 @@ package com.ktds.flyingcube.biz.application.repository;
 
 import com.ktds.flyingcube.biz.application.domain.Deployment;
 import com.ktds.flyingcube.biz.application.dto.DeploymentReq.FindDto;
-import com.ktds.flyingcube.biz.application.dto.DeploymentRes.PageDto;
+import com.ktds.flyingcube.biz.application.dto.DeploymentRes.AllDto;
 import com.ktds.flyingcube.common.querydsl.Querydsl4RepositorySupport;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -20,9 +20,9 @@ public class DeploymentQueryRepository extends Querydsl4RepositorySupport {
         super(Deployment.class);
     }
 
-    public Page<PageDto> selectDeployments(FindDto findDto, Pageable pageable) {
+    public Page<AllDto> selectDeployments(FindDto findDto, Pageable pageable) {
         return applyPagination(pageable, contentQuery -> contentQuery
-                .select(Projections.fields(PageDto.class,
+                .select(Projections.fields(AllDto.class,
                         deployment.id.as("deploymentId"),
                         deployment.deploymentName,
                         deployment.namespace,
