@@ -33,4 +33,4 @@ logging:
 flyingCube:
   app:
     jwtSecret: 1234567890
-    jwtExpirationMs: 604800000 # one week(168h)
+    jwtExpirationMs: 1800000 # half hour

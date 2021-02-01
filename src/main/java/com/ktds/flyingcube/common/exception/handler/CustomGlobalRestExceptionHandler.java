@@ -51,7 +51,7 @@ public class CustomGlobalRestExceptionHandler {
     protected ResponseEntity<?> handleBadCredentialsException(BadCredentialsException ex, WebRequest request) {
         log.error("▒▒▒▒▒▒▒▒ EXCEPTION ▒▒▒▒▒▒▒▒ {}", ExceptionUtils.getMessage(ex));
         log.error("▒▒▒▒▒▒▒▒ EXCEPTION ▒▒▒▒▒▒▒▒ {}", ExceptionUtils.getStackTrace(ex));
-        return new ResponseEntity<>(buildError(GlobalExType.USER_NOT_FOUND, request), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(buildError(GlobalExType.USER_NOT_FOUND, request), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
