@@ -30,3 +30,7 @@ spring:
 logging:
   config: classpath:logback/logback-spring.xml    
 
+flyingCube:
+  app:
+    jwtSecret: 1234567890
+    jwtExpirationMs: 604800000 # one week(168h)
