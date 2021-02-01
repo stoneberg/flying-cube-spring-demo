@@ -35,8 +35,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 			String jwt = parseJwt(request);
 			if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
 				String username = jwtUtils.getUserNameFromJwtToken(jwt);
-
 				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+				// jwt subject에 저장된 usename으로 DB 재조회
+				// 만약 DB를 재조회 하지 않고 authentication을 만들려면 jwt안에 authentication 생성 필요한 모든 정보를 넣어주면 된다.
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

@@ -5,16 +5,10 @@ import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class JwtUtils {
@@ -39,27 +33,20 @@ public class JwtUtils {
         this.refreshExpirationDateInMs = refreshExpirationDateInMs;
     }
 
-    public String generateJwtToken(Authentication authentication) {
-        logger.info("@secret====================>{}", secret);
-        logger.info("@expirationDateInMs========>{}", expirationDateInMs);
-        logger.info("@refreshExpirationDateInMs=>{}", refreshExpirationDateInMs);
-
-        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+    public String generateJwtToken(UserDetailsImpl userDetails) {
         Map<String, Object> claims = new HashMap<>();
 
-        Collection<? extends GrantedAuthority> roles = userPrincipal.getAuthorities();
-        if (roles.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-            claims.put("isAdmin", true);
+        List<String> roles = new ArrayList<>();
+        for (GrantedAuthority auth : userDetails.getAuthorities()) {
+            roles.add(auth.getAuthority());
         }
-        if (roles.contains(new SimpleGrantedAuthority("ROLE_USER"))) {
-            claims.put("isUser", true);
-        }
+        claims.put("roles", roles);
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(userPrincipal.getUsername())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + expirationDateInMs))
+                .setSubject(userDetails.getUsername()) // save username in subject
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationDateInMs))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
@@ -70,10 +57,12 @@ public class JwtUtils {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationDateInMs))
-                .signWith(SignatureAlgorithm.HS512, secret).compact();
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
 
     }
 
+    // fetch username stored in token subject
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
