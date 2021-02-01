@@ -15,6 +15,13 @@ public class ResponseDto<T> extends BaseResponse {
 
 	private T data;
 
+	public static <T> ResponseDto<T> ok() {
+		ResponseDto<T> response = new ResponseDto<>();
+		response.setMessage("success");
+		response.setStatus(HttpStatus.OK);
+		return response;
+	}
+
 	public static <T> ResponseDto<T> of(T data) {
 		ResponseDto<T> response = new ResponseDto<>();
 		response.setData(data);

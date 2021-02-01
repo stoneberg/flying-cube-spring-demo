@@ -17,4 +17,15 @@ public class DeploymentReq {
 //        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 //        private LocalDateTime endDt; // 검색 종료일
     }
+
+    @Data
+    @JsonIgnoreProperties
+    public static class DeploymentDto {
+        private String deploymentName;
+        private String namespace;
+        private Integer replicas;
+        private String triggerStg;
+        private String updateStg;
+    }
+
 }
