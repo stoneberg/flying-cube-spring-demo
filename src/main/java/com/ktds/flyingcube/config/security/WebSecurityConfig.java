@@ -4,8 +4,6 @@ import com.ktds.flyingcube.config.security.jwt.AuthEntryPointJwt;
 import com.ktds.flyingcube.config.security.jwt.AuthTokenFilter;
 import com.ktds.flyingcube.config.security.jwt.JwtUtils;
 import com.ktds.flyingcube.config.security.service.UserDetailsServiceImpl;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,17 +28,15 @@ import java.util.Arrays;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthEntryPointJwt unauthorizedHandler;
-    private final String jwtSecret;
-    private final Long jwtExpirationMs;
+    private final JwtUtils jwtUtils;
 
     public WebSecurityConfig(UserDetailsServiceImpl userDetailsService,
                              AuthEntryPointJwt unauthorizedHandler,
-                             @Value("${flyingCube.app.jwtSecret}") String jwtSecret,
-                             @Value("${flyingCube.app.jwtExpirationMs}") Long jwtExpirationMs) {
+                             JwtUtils jwtUtils
+    ) {
         this.userDetailsService = userDetailsService;
         this.unauthorizedHandler = unauthorizedHandler;
-        this.jwtSecret = jwtSecret;
-        this.jwtExpirationMs = jwtExpirationMs;
+        this.jwtUtils = jwtUtils;
     }
 
     @Override
@@ -78,7 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter(new JwtUtils(jwtSecret, jwtExpirationMs), userDetailsService);
+        return new AuthTokenFilter(jwtUtils, userDetailsService);
     }
 
     @Bean

@@ -3,7 +3,7 @@ server:
   
 spring:
   application:
-    name: FLYING-CUBE-SERVICE
+    name: FLYING-CUBE
   banner:
     location: classpath:banner/banner.txt
   h2:
@@ -30,7 +30,7 @@ spring:
 logging:
   config: classpath:logback/logback-spring.xml    
 
-flyingCube:
-  app:
-    jwtSecret: 1234567890
-    jwtExpirationMs: 1800000 # half hour
+jwt:
+  secret: 1234567890
+  expirationDateInMs: 1800000 # half hour
+  refreshExpirationDateInMs: 3600000 # hour

@@ -1,7 +1,7 @@
 package com.ktds.flyingcube.config.security.jwt;
 
 import com.ktds.flyingcube.config.security.service.UserDetailsServiceImpl;
-import lombok.RequiredArgsConstructor;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,8 +43,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
-		} catch (Exception e) {
-			logger.error("Cannot set user authentication: {}", e);
+		} catch (ExpiredJwtException e) {
+			logger.error("Token has expired!: {}", e.getMessage());
 		}
 
 		filterChain.doFilter(request, response);
