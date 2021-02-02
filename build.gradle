@@ -3,7 +3,6 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
-    id 'net.ltgt.apt' version '0.21'
 }
 
 group = 'com.ktds'
@@ -53,6 +52,7 @@ querydsl {
         annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.1.Final'
 
         compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
         // https://mvnrepository.com/artifact/p6spy/p6spy
         compile group: 'p6spy', name: 'p6spy', version: '3.9.1'
