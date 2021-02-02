@@ -37,5 +37,5 @@ logging:
 
 jwt:
   secret: 1234567890
-  expirationDateInMs: 1800000 # half hour
+  expirationDateInMs: 60000 #1800000 # half hour
   refreshExpirationDateInMs: 3600000 # hour

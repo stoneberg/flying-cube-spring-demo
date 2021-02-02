@@ -2,7 +2,7 @@ package com.ktds.flyingcube.biz.auth.controller;
 
 import com.ktds.flyingcube.biz.auth.dto.AuthReq.LoginDto;
 import com.ktds.flyingcube.common.response.JwtResponse;
-import com.ktds.flyingcube.config.security.jwt.JwtUtils;
+import com.ktds.flyingcube.common.utils.JwtUtils;
 import com.ktds.flyingcube.config.security.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +42,7 @@ public class AuthController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        String token = jwtUtils.generateJwtToken(userDetails);
+        String token = jwtUtils.generateJwt(userDetails);
 
         return ResponseEntity.ok(new JwtResponse(
                 token,
